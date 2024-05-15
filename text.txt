@@ -1,0 +1,38 @@
+<Input
+placeholder="Enter url (e.g., http://www.example.com)"
+name="url"
+id={link.id}
+value={link.url}
+errorMessage={errorMessage}
+setValue={(e: any) => onChangeHandler(e, index)}
+style={`${
+  errorMessage && !isValidUrl(link.url)
+    ? "outline-1 border-[red]"
+    : ""
+}`}
+isUrl={true}
+/>
+
+
+const onChangeHandler = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  index: number
+) => {
+  const { name, value } = e.target;
+  dispatch(
+    onchangeHandler({ id: forms[index].id, changes: { [name]: value } })
+  );
+  setInputLink(value);
+};
+
+
+ onchangeHandler: (
+      state,
+      action: PayloadAction<{ id: number; changes: Partial<Link> }>
+    ) => {
+      const { id, changes } = action.payload;
+      const index = state.forms.findIndex((form) => form.id === id);
+      if (index !== -1) {
+        state.forms[index] = { ...state.forms[index], ...changes };
+      }
+    },
